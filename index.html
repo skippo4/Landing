@@ -192,13 +192,18 @@
   }
 
   const googleFormURL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse";
-  const paystackURL = "pk_test_5b46993ec51dbdb81b8685677d267223a8e97420";
   const whatsappRedirect = "https://chat.whatsapp.com/Gx1awJ1J8tc7j8pndZpvBl?mode=r_t";
+
+  const paystackPublicKey = "pk_test_5b46993ec51dbdb81b8685677d267223a8e97420"; // Replace with your Paystack public key
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Send to Google Form
+    const name = form.querySelector('input[name="entry.1234567890"]').value;
+    const email = form.querySelector('input[name="entry.2345678901"]').value;
+    const phone = form.querySelector('input[name="entry.3456789012"]').value;
+
+    // Send data to Google Form
     const formData = new FormData(form);
     fetch(googleFormURL, {
       method: "POST",
@@ -206,17 +211,27 @@
       body: formData
     });
 
-    // Save to localStorage
-    const userName = form.querySelector('input[name="entry.1234567890"]').value;
-    const userEmail = form.querySelector('input[name="entry.2345678901"]').value;
-    const userPhone = form.querySelector('input[name="entry.3456789012"]').value;
-
-    localStorage.setItem("userName", userName);
-    localStorage.setItem("userEmail", userEmail);
-    localStorage.setItem("userPhone", userPhone);
-
-    // Redirect to Paystack
-    window.location.href = paystackURL;
+    // Start Paystack inline payment
+    PaystackPop.setup({
+      key: paystackPublicKey,
+      email: email,
+      amount: 1000000, // amount in kobo (₦3,000)
+      currency: "NGN",
+      ref: 'DA-' + Math.floor(Math.random() * 1000000000),
+      metadata: {
+        custom_fields: [
+          { display_name: "Name", variable_name: "name", value: name },
+          { display_name: "Phone", variable_name: "phone", value: phone }
+        ]
+      },
+      callback: function(response) {
+        // After payment success, redirect to WhatsApp
+        window.location.href = whatsappRedirect;
+      },
+      onClose: function() {
+        alert("Payment was cancelled. Please try again.");
+      }
+    }).openIframe();
   });
 </script>
 
