@@ -42,42 +42,6 @@
       width: 100%; margin-bottom: 1rem; padding: 0.8rem;
       border: 1px solid #ccc; border-radius: 4px;
     }
-     .testimonial-container {
-  height: 100px;
-  overflow: hidden;
-  position: relative;
-  background: #e0f2fe;
-  border-left: 5px solid #0ea5e9;
-  margin-top: 1rem;
-}
-
-.testimonial-list {
-  display: flex;
-  flex-direction: column;
-  animation: scrollTestimonials 24s linear infinite;
-}
-
-.testimonial {
-  padding: 1rem;
-  font-style: italic;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
-@keyframes scrollTestimonials {
-  0% { transform: translateY(0); }
-  12.5% { transform: translateY(-100px); }
-  25% { transform: translateY(-200px); }
-  37.5% { transform: translateY(-300px); }
-  50% { transform: translateY(-400px); }
-  62.5% { transform: translateY(-500px); }
-  75% { transform: translateY(-600px); }
-  87.5% { transform: translateY(-700px); }
-  100% { transform: translateY(-800px); }
-}
   </style>
 </head>
 <body>
@@ -94,6 +58,7 @@
     <iframe src="video.mp4" frameborder="0" allowfullscreen></iframe>
   </div>
 </section>
+
 <section style="text-align:center;">
   <button class="cta-btn" onclick="openForm()">Join Now – ₦10,000 Only</button>
 </section>
@@ -105,32 +70,6 @@
     <li>📈 Power BI for Dashboards & Visualizations</li>
     <li>🧮 SQL Basics for Data Querying</li>
     <li>💼 Real-life Projects to Build Your Portfolio</li>
-  </ul>
-</section>
-<section>
-  <h2>What Our Students Are Saying</h2>
-  <div class="testimonial-container">
-    <div class="testimonial-list">
-      <div class="testimonial">“This bootcamp transformed my career! I went from Excel beginner to landing a remote analyst role in 6 weeks.” – Chika, Abuja</div>
-      <div class="testimonial">“I never thought I could understand Power BI until I joined. Now I create dashboards for clients!” – Yusuf, Port Harcourt</div>
-      <div class="testimonial">“The SQL module alone was worth it. I finally cracked data querying for my job!” – Blessing, Enugu
-      </div>
-      <div class="testimonial">“After the final project, I updated my CV and got called for 2 interviews in 10 days.” – Emmanuel, Lagos</div>
-       <div class="testimonial">“What I love most? It’s beginner-friendly. I joined with zero experience and now I freelance confidently.” – Ifunanya, Owerri</div>
-      <div class="testimonial">“The mentor support was 10/10. They answered every question and guided me even after class.” – Aisha, Kano</div>
-      <div class="testimonial">“Crystal-clear teaching. The SQL module blew my mind!” – Blessing, Asaba</div>
-      <div class="testimonial">“From beginner to analyst in 4 weeks. I now earn from Upwork.” – Uche, Port Abuja</div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <h2>Course Modules</h2>
-  <ul>
-    <li>Week 1: Excel Basics, Functions & PivotTables</li>
-    <li>Week 2: Power BI Visuals, DAX & Reports</li>
-    <li>Week 3: SQL Queries for Data Analysis</li>
-    <li>Week 4: Final Project + CV & Portfolio Help</li>
   </ul>
 </section>
 
@@ -149,21 +88,9 @@
     <p>100% online via Zoom + Google Classroom.</p>
   </details>
   <details>
-    <summary>What do i need to get started?</summary>
-    <p>A Laptop and Internet connection</p>
-  </details>
-  <details>
-    <summary>Will I there be mentorship after training?</summary>
-    <p>Yes! There will be mentorship after training</p>
-  </details>
-  <details>
     <summary>Will I get a certificate?</summary>
-    <p>Yes! A Certificate is issued upon completion.</p>
+    <p>Yes! A certificate is issued upon completion.</p>
   </details>
-</section>
-
-<section style="text-align:center;">
-  <button class="cta-btn" onclick="openForm()">Join Now – ₦10,000 Only</button>
 </section>
 
 <footer>
@@ -183,6 +110,8 @@
   </div>
 </div>
 
+<!-- Paystack & Form Script -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
   const modal = document.getElementById('formModal');
   const form = document.getElementById('registrationForm');
@@ -191,47 +120,46 @@
     modal.style.display = 'flex';
   }
 
-  const googleFormURL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse";
+  const googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSc4eUxw9MXkU6Gz2mqvABjXTwy0yf0XcyxltLMiI5hq9BRxHA/formResponse";
   const whatsappRedirect = "https://chat.whatsapp.com/Gx1awJ1J8tc7j8pndZpvBl?mode=r_t";
-
-  const paystackPublicKey = "pk_test_5b46993ec51dbdb81b8685677d267223a8e97420"; // Replace with your Paystack public key
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const name = form.querySelector('input[name="entry.1234567890"]').value;
-    const email = form.querySelector('input[name="entry.2345678901"]').value;
-    const phone = form.querySelector('input[name="entry.3456789012"]').value;
+    const userName = form.querySelector('input[name="entry.1234567890"]').value;
+    const userEmail = form.querySelector('input[name="entry.2345678901"]').value;
+    const userPhone = form.querySelector('input[name="entry.3456789012"]').value;
 
-    // Send data to Google Form
-    const formData = new FormData(form);
-    fetch(googleFormURL, {
-      method: "POST",
-      mode: "no-cors",
-      body: formData
-    });
+    localStorage.setItem("userName", userName);
+    localStorage.setItem("userEmail", userEmail);
+    localStorage.setItem("userPhone", userPhone);
 
-    // Start Paystack inline payment
-    PaystackPop.setup({
-      key: paystackPublicKey,
-      email: email,
-      amount: 1000000, // amount in kobo (₦3,000)
+    const handler = PaystackPop.setup({
+      key: 'pk_test_5b46993ec51dbdb81b8685677d267223a8e97420',
+      email: userEmail,
+      amount: 10000 * 100,
       currency: "NGN",
-      ref: 'DA-' + Math.floor(Math.random() * 1000000000),
-      metadata: {
-        custom_fields: [
-          { display_name: "Name", variable_name: "name", value: name },
-          { display_name: "Phone", variable_name: "phone", value: phone }
-        ]
-      },
       callback: function(response) {
-        // After payment success, redirect to WhatsApp
+        // Submit to Google Form after payment
+        const formData = new FormData();
+        formData.append("entry.1234567890", userName);
+        formData.append("entry.2345678901", userEmail);
+        formData.append("entry.3456789012", userPhone);
+
+        fetch(googleFormURL, {
+          method: "POST",
+          mode: "no-cors",
+          body: formData
+        });
+
         window.location.href = whatsappRedirect;
       },
       onClose: function() {
-        alert("Payment was cancelled. Please try again.");
+        alert('Transaction was not completed');
       }
-    }).openIframe();
+    });
+
+    handler.openIframe();
   });
 </script>
 
